@@ -21,11 +21,20 @@ fi
 function setup_webapps() {
   echo "Emptying webapps directory..."
   rm -rf $TOMCAT_HOME/webapps/*
-  mv /tmp/orig.tar.gz $TOMCAT_HOME/webapps/
 
   echo "Copying war file to webapps/ROOT.war..."
   warFileName=`find /tmp/src -type f -name openunison*.war -print`
   cp $warFileName $TOMCAT_HOME/webapps/ROOT.war
+
+	echo "Removing source..."
+	rm -rf /tmp/src
+
+	echo "Removing maven repo..."
+	rm -rf /usr/local/tremolo-service/.m2
+
+	echo "Removing maven..."
+	rm -rf /usr/local/apache-maven-$MAVEN_VERSION/*
+
 }
 
 
@@ -39,7 +48,7 @@ if [ $numWarFiles -eq 1 ]; then
 elif [ -f "/tmp/src/pom.xml" ]; then
 # If a pom.xml is present, this is a normal build scenario so run maven.
   echo "Found pom.xml... attempting to build with 'mvn ${MAVEN_ARGS}'"
-  
+
   if [ -z "$MAVEN_ARGS" ]; then
     export MAVEN_ARGS="package"
   fi
@@ -66,4 +75,3 @@ fi
 
 echo "Done."
 exit
-
