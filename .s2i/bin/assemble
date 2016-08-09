@@ -19,10 +19,6 @@ fi
 
 
 function setup_webapps() {
-  echo "Backing up default webapps directory..."
-  tar -c -f /tmp/orig.tar $TOMCAT_HOME/webapps/*
-  gzip /tmp/orig.tar
-
   echo "Emptying webapps directory..."
   rm -rf $TOMCAT_HOME/webapps/*
   mv /tmp/orig.tar.gz $TOMCAT_HOME/webapps/
